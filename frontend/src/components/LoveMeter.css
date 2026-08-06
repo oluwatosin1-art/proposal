@@ -1,9 +1,9 @@
 .love-meter-container {
   background: rgba(255, 255, 255, 0.95);
-  border-radius: 20px;
-  padding: 25px;
-  margin: 20px 0;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
+  padding: 20px 15px;
+  margin: 15px 0;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
   position: relative;
   overflow: hidden;
 }
@@ -12,39 +12,39 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 15px;
-  margin-bottom: 15px;
+  gap: 12px;
+  margin-bottom: 12px;
 }
 
 .love-meter-emoji {
-  font-size: 30px;
+  font-size: 25px;
   animation: pulse 1.5s ease-in-out infinite;
 }
 
 .love-meter-header h3 {
   margin: 0;
   color: #2d3748;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .love-meter-track {
   width: 100%;
-  height: 30px;
+  height: 26px;
   background: #edf2f7;
-  border-radius: 15px;
+  border-radius: 13px;
   overflow: hidden;
   position: relative;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .love-meter-fill {
   height: 100%;
-  border-radius: 15px;
+  border-radius: 13px;
   transition: width 0.1s ease;
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  padding-right: 10px;
+  padding-right: 8px;
   position: relative;
   overflow: hidden;
 }
@@ -73,7 +73,7 @@
 .love-meter-percentage {
   color: white;
   font-weight: 700;
-  font-size: 14px;
+  font-size: 12px;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   position: relative;
   z-index: 2;
@@ -90,7 +90,7 @@
 
 .floating-heart-mini {
   position: absolute;
-  font-size: 20px;
+  font-size: 18px;
   animation: floatHeartMini 1.5s ease-out forwards;
   top: 50%;
 }
@@ -101,20 +101,47 @@
     opacity: 1;
   }
   100% {
-    transform: translateY(-100px) scale(1) rotate(720deg);
+    transform: translateY(-80px) scale(1) rotate(720deg);
     opacity: 0;
   }
 }
 
 .love-meter-footer {
   text-align: center;
-  margin-top: 15px;
+  margin-top: 12px;
   color: #718096;
-  font-size: 14px;
+  font-size: 13px;
   font-style: italic;
 }
 
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.1); }
+  50% { transform: scale(1.08); }
+}
+
+@media (max-width: 480px) {
+  .love-meter-container {
+    padding: 15px 12px;
+    margin: 12px 0;
+  }
+  
+  .love-meter-header h3 {
+    font-size: 14px;
+  }
+  
+  .love-meter-emoji {
+    font-size: 22px;
+  }
+  
+  .love-meter-track {
+    height: 22px;
+  }
+  
+  .love-meter-percentage {
+    font-size: 11px;
+  }
+  
+  .love-meter-footer {
+    font-size: 12px;
+  }
 }

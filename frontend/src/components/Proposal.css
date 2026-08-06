@@ -4,12 +4,13 @@
   justify-content: center;
   align-items: center;
   animation: fadeIn 0.8s ease-out;
+  padding: 0 5px;
 }
 
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-30px) scale(0.95);
+    transform: translateY(-20px) scale(0.95);
   }
   to {
     opacity: 1;
@@ -19,11 +20,11 @@
 
 .proposal-card {
   background: rgba(255, 255, 255, 0.95);
-  border-radius: 30px;
-  padding: 50px 40px;
+  border-radius: 25px;
+  padding: 30px 20px;
   width: 100%;
   max-width: 600px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
   text-align: center;
   backdrop-filter: blur(10px);
   position: relative;
@@ -42,8 +43,8 @@
 }
 
 .heart-icon {
-  font-size: 60px;
-  margin-bottom: 20px;
+  font-size: 50px;
+  margin-bottom: 15px;
   display: inline-block;
 }
 
@@ -56,30 +57,30 @@
     transform: scale(1);
   }
   50% {
-    transform: scale(1.15);
+    transform: scale(1.1);
   }
 }
 
 h1 {
   color: #2d3748;
-  font-size: 28px;
-  margin-bottom: 20px;
+  font-size: 24px;
+  margin-bottom: 15px;
   font-weight: 700;
 }
 
 .message-preview {
   background: #f7fafc;
-  border-radius: 15px;
-  padding: 25px;
-  margin: 15px 0;
+  border-radius: 12px;
+  padding: 18px;
+  margin: 12px 0;
   text-align: left;
   border-left: 4px solid #f687b3;
 }
 
 .message-text {
   color: #2d3748;
-  font-size: 16px;
-  line-height: 1.8;
+  font-size: 15px;
+  line-height: 1.7;
   margin: 0;
 }
 
@@ -111,13 +112,15 @@ h1 {
 .read-more-btn {
   background: #edf2f7;
   border: none;
-  padding: 8px 20px;
+  padding: 6px 16px;
   border-radius: 20px;
-  font-size: 14px;
+  font-size: 13px;
   color: #4a5568;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 15px;
+  margin-top: 12px;
+  width: 100%;
+  max-width: 200px;
 }
 
 .read-more-btn:hover {
@@ -127,28 +130,28 @@ h1 {
 
 .divider {
   color: #cbd5e0;
-  margin: 20px 0;
-  font-size: 14px;
+  margin: 15px 0;
+  font-size: 12px;
   letter-spacing: 4px;
 }
 
 .question-text {
-  font-size: 24px;
+  font-size: 22px;
   color: #2d3748;
-  margin: 20px 0 30px;
+  margin: 15px 0 25px;
   font-weight: 600;
 }
 
 .button-group {
   display: flex;
-  gap: 20px;
+  gap: 15px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .btn {
-  padding: 15px 40px;
-  font-size: 18px;
+  padding: 14px 30px;
+  font-size: 16px;
   font-weight: 700;
   border: none;
   border-radius: 50px;
@@ -158,11 +161,12 @@ h1 {
   letter-spacing: 1px;
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-width: 140px;
+  gap: 8px;
+  min-width: 120px;
   justify-content: center;
   position: relative;
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .btn:disabled {
@@ -174,12 +178,7 @@ h1 {
 .btn-yes {
   background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
   color: white;
-  box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
-}
-
-.btn-yes:hover:not(:disabled) {
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 30px rgba(245, 87, 108, 0.6);
+  box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
 }
 
 .btn-yes:active:not(:disabled) {
@@ -191,21 +190,16 @@ h1 {
   color: #4a5568;
 }
 
-.btn-no:hover:not(:disabled) {
-  background: #cbd5e0;
-  transform: translateY(-3px);
-}
-
 .btn-no:active:not(:disabled) {
   transform: scale(0.95);
 }
 
 .btn-icon {
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .submitting {
-  margin-top: 15px;
+  margin-top: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -215,8 +209,8 @@ h1 {
 }
 
 .loader-small {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border: 3px solid #e2e8f0;
   border-top: 3px solid #667eea;
   border-radius: 50%;
@@ -230,116 +224,77 @@ h1 {
 }
 
 .footer-text {
-  margin-top: 25px;
-  font-size: 14px;
+  margin-top: 20px;
+  font-size: 13px;
   color: #a0aec0;
   font-style: italic;
 }
 
-/* Response Cards */
-.response-card {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 30px;
-  padding: 50px 40px;
-  width: 100%;
-  max-width: 600px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  text-align: center;
-  animation: celebratePop 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-}
-
-@keyframes celebratePop {
-  0% {
-    opacity: 0;
-    transform: scale(0.5) rotate(-10deg);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1) rotate(0deg);
-  }
-}
-
-.response-card.yes {
-  border: 3px solid #48bb78;
-  background: linear-gradient(135deg, #f0fff4 0%, #e6fffa 100%);
-}
-
-.response-card.no {
-  border: 3px solid #fc8181;
-  background: linear-gradient(135deg, #fff5f5 0%, #fefcbf 100%);
-}
-
-.response-card h2 {
-  font-size: 32px;
-  margin: 10px 0;
-}
-
-.response-text {
-  font-size: 20px;
-  color: #2d3748;
-  margin: 15px 0;
-}
-
-.response-detail {
-  margin-top: 20px;
-  padding: 15px;
-  border-radius: 15px;
-  background: rgba(255, 255, 255, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.response-detail .emoji {
-  font-size: 24px;
-}
-
-.love-message {
-  margin-top: 20px;
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 15px;
-  color: #2d3748;
-  font-size: 16px;
-  font-style: italic;
-}
-
-.love-message p {
-  margin: 0;
-}
-
-@media (max-width: 500px) {
-  .proposal-card,
-  .response-card {
-    padding: 30px 20px;
+/* Mobile First - Small Screens */
+@media (max-width: 480px) {
+  .proposal-card {
+    padding: 20px 15px;
+    border-radius: 20px;
   }
   
-  .btn {
-    padding: 12px 25px;
-    font-size: 16px;
-    min-width: 120px;
-  }
-  
-  .button-group {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .btn {
-    width: 100%;
-  }
-  
-  .question-text {
+  h1 {
     font-size: 20px;
+  }
+  
+  .message-preview {
+    padding: 14px;
   }
   
   .message-text {
     font-size: 14px;
   }
   
-  h1 {
-    font-size: 24px;
+  .question-text {
+    font-size: 19px;
+    margin: 12px 0 20px;
+  }
+  
+  .btn {
+    padding: 12px 25px;
+    font-size: 15px;
+    min-width: 100px;
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .button-group {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .btn {
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  .heart-icon {
+    font-size: 40px;
+  }
+  
+  .read-more-btn {
+    font-size: 12px;
+    padding: 6px 14px;
+  }
+}
+
+/* Touch-friendly - Larger tap targets */
+@media (hover: none) and (pointer: coarse) {
+  .btn {
+    padding: 16px 30px;
+    min-height: 54px;
+  }
+  
+  .read-more-btn {
+    min-height: 44px;
+  }
+  
+  .password-input button {
+    min-height: 44px;
   }
 }
