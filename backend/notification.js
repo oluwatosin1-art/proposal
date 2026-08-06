@@ -1,4 +1,4 @@
-// backend/notification.js - Optional email/SMS notifications
+// backend/notification.js - Email/SMS notifications
 const nodemailer = require('nodemailer');
 
 // Email notification (using Gmail - free)
@@ -8,15 +8,16 @@ const sendEmailNotification = async (response, poem) => {
     service: 'gmail',
     auth: {
       user: 'boluwatosin72@gmail.com',
-      pass: 'iygx plbq jwrs qdfp' // Use App Password, not regular password
+      pass: 'iygx plbq jwrs qdfp' // Your App Password
     }
   });
 
   const isYes = response === 'YES';
   
+  // ✅ FIX: Use the correct email addresses
   const mailOptions = {
-    from: 'your-email@gmail.com',
-    to: 'your-email@gmail.com', // Send to yourself
+    from: 'boluwatosin72@gmail.com', // Your email
+    to: 'boluwatosin72@gmail.com', // Send to yourself (change if needed)
     subject: isYes ? '💖 SHE SAID YES! 🎉' : '💔 She said no...',
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background: linear-gradient(135deg, #667eea, #764ba2); border-radius: 20px;">
@@ -41,37 +42,28 @@ const sendEmailNotification = async (response, poem) => {
   };
 
   try {
-    await transporter.sendMail(mailOptions);
-    console.log('📧 Notification email sent!');
+    const info = await transporter.sendMail(mailOptions);
+    console.log('📧 Notification email sent!', info.messageId);
+    console.log('📧 Sent to:', 'boluwatosin72@gmail.com');
   } catch (error) {
-    console.error('Email error:', error);
+    console.error('❌ Email error:', error.message);
+    if (error.code === 'EAUTH') {
+      console.error('⚠️ Authentication failed! Check your email and app password.');
+      console.error('💡 Make sure you have:');
+      console.error('  1. Enabled 2-Factor Authentication on your Google account');
+      console.error('  2. Generated an App Password (not your regular password)');
+      console.error('  3. The App Password has no spaces');
+    }
   }
 };
 
-// SMS notification (using Twilio - free trial)
+// SMS notification (optional)
 const sendSMSNotification = async (response) => {
   // You'll need Twilio account for this
   // https://www.twilio.com/
-  const twilio = require('twilio');
-  
-  const accountSid = 'your-twilio-sid';
-  const authToken = 'your-twilio-token';
-  const client = twilio(accountSid, authToken);
-  
-  const isYes = response === 'YES';
-  
-  try {
-    await client.messages.create({
-      body: isYes 
-        ? '💖 SHE SAID YES! Congratulations! 🎉 She wants to be your girlfriend!' 
-        : '💔 She said no. Stay strong, brother 💪',
-      to: '+1234567890', // Your phone number
-      from: '+1234567890' // Your Twilio number
-    });
-    console.log('📱 SMS notification sent!');
-  } catch (error) {
-    console.error('SMS error:', error);
-  }
+  // Skip for now if you don't have Twilio
+  console.log('📱 SMS notification not configured yet');
+  return;
 };
 
 module.exports = { sendEmailNotification, sendSMSNotification };

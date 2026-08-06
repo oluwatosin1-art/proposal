@@ -123,11 +123,49 @@ app.post('/api/reset', (req, res) => {
     proposalState.timestamp = null;
     proposalState.ipAddress = null;
     proposalState.loveMeter = null;
-    
-    res.json({ 
-        success: true, 
+
+    res.json({
+        success: true,
         message: '🔄 Reset successful! Ready for the real answer.',
         status: 'pending'
+    });
+});
+// At the top of server.js - import the notification
+const { sendEmailNotification, sendSMSNotification } = require('./notification');
+
+// In the /api/respond endpoint, after saving the response:
+app.post('/api/respond', (req, res) => {
+    const { answer } = req.body;
+
+    if (!answer || (answer !== 'YES' && answer !== 'NO')) {
+        return res.status(400).json({ error: 'Invalid response' });
+    }
+
+    // Save response
+    proposalState.response = answer;
+    proposalState.timestamp = new Date().toISOString();
+    proposalState.ipAddress = req.ip || req.connection.remoteAddress;
+    proposalState.loveMeter = answer === 'YES' ? Math.floor(Math.random() * 30 + 70) : Math.floor(Math.random() * 30 + 10);
+
+    const poems = POEMS[answer];
+    const compliments = COMPLIMENTS[answer];
+
+    // ✅ ADD THIS: Send email notification
+    const selectedPoem = poems[Math.floor(Math.random() * poems.length)];
+    sendEmailNotification(answer, selectedPoem);
+
+    // Optional: Send SMS too
+    // sendSMSNotification(answer);
+
+    res.json({
+        success: true,
+        answer: answer,
+        timestamp: proposalState.timestamp,
+        poem: selectedPoem,
+        compliment: compliments[Math.floor(Math.random() * compliments.length)],
+        loveMeter: proposalState.loveMeter,
+        sound: SOUNDS[answer],
+        responseEmoji: answer === 'YES' ? '💖' : '💔'
     });
 });
 
@@ -147,6 +185,8 @@ app.get('/api/love-quote', (req, res) => {
         quote: quotes[Math.floor(Math.random() * quotes.length)]
     });
 });
+
+
 
 // For Vercel - export the app
 module.exports = app;
