@@ -6,7 +6,9 @@ import LoveMeter from './components/LoveMeter';
 import SecretLetter from './components/SecretLetter';
 import './App.css';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5003/api';
+// UPDATE THIS URL WITH YOUR BACKEND URL
+// Your backend is at: proposal-backend-seven.vercel.app
+const API_URL = 'https://proposal-backend-seven.vercel.app/api';
 
 function App() {
   const [response, setResponse] = useState(null);
@@ -68,7 +70,7 @@ function App() {
           timestamp: res.data.timestamp,
           responseEmoji: res.data.responseEmoji
         });
-
+        
         if (res.data.sound) {
           const audio = new Audio(res.data.sound);
           audio.play().catch(e => console.log('Audio play failed:', e));
@@ -108,9 +110,9 @@ function App() {
             <button onClick={checkStatus}>Retry</button>
           </div>
         )}
-
+        
         <Celebration />
-
+        
         <div className="response-container">
           <div className="response-card yes">
             <div className="heart-icon">💖</div>
@@ -118,43 +120,43 @@ function App() {
             <p className="response-text">
               You made me the happiest person ever!
             </p>
-
+            
             {responseData.compliment && (
               <div className="compliment-bubble">
                 <span>💫</span>
                 <p>{responseData.compliment}</p>
               </div>
             )}
-
+            
             {showLoveMeter && responseData.loveMeter && (
               <LoveMeter score={responseData.loveMeter} isYes={true} />
             )}
-
+            
             {showSecretLetter && responseData.poem && (
-              <SecretLetter
-                response="YES"
+              <SecretLetter 
+                response="YES" 
                 poem={responseData.poem}
                 compliment={responseData.compliment}
               />
             )}
-
+            
             <div className="response-detail">
               <span className="emoji">💕</span>
               <span>I can't wait to start this beautiful journey with you</span>
               <span className="emoji">💕</span>
             </div>
-
+            
             <div className="love-message">
               <p>❤️ I promise to make every ordinary day feel special for you too ❤️</p>
             </div>
-
+            
             {loveQuote && (
               <div className="love-quote">
                 <span>📝</span>
                 <p>"{loveQuote}"</p>
               </div>
             )}
-
+            
             <div className="response-timestamp">
               🕰️ You said YES at {new Date(responseData.timestamp).toLocaleTimeString()}
             </div>
@@ -174,7 +176,7 @@ function App() {
             <button onClick={checkStatus}>Retry</button>
           </div>
         )}
-
+        
         <div className="response-container">
           <div className="response-card no">
             <div className="heart-icon">💔</div>
@@ -182,39 +184,39 @@ function App() {
             <p className="response-text">
               I'll always care about you
             </p>
-
+            
             {responseData.compliment && (
               <div className="compliment-bubble no">
                 <span>💫</span>
                 <p>{responseData.compliment}</p>
               </div>
             )}
-
+            
             {showLoveMeter && responseData.loveMeter && (
               <LoveMeter score={responseData.loveMeter} isYes={false} />
             )}
-
+            
             {showSecretLetter && responseData.poem && (
-              <SecretLetter
-                response="NO"
+              <SecretLetter 
+                response="NO" 
                 poem={responseData.poem}
                 compliment={responseData.compliment}
               />
             )}
-
+            
             <div className="response-detail">
               <span>🤗</span>
               <span>Take care of yourself</span>
               <span>💫</span>
             </div>
-
+            
             {loveQuote && (
               <div className="love-quote">
                 <span>📝</span>
                 <p>"{loveQuote}"</p>
               </div>
             )}
-
+            
             <div className="response-timestamp">
               🕰️ You responded at {new Date(responseData.timestamp).toLocaleTimeString()}
             </div>
@@ -233,13 +235,13 @@ function App() {
           <button onClick={checkStatus}>Retry</button>
         </div>
       )}
-
+      
       {loveQuote && (
         <div className="floating-quote">
           💭 {loveQuote}
         </div>
       )}
-
+      
       <Proposal
         onRespond={handleResponse}
         currentResponse={response}
