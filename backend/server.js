@@ -3,8 +3,15 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5003;
 
-// ✅ IMPORT the email notification
-const { sendEmailNotification } = require('./notification');
+// ✅ Import email (with fallback if it fails)
+let sendEmailNotification;
+try {
+    const notification = require('./notification');
+    sendEmailNotification = notification.sendEmailNotification;
+} catch (error) {
+    console.log('⚠️ Email notification not available:', error.message);
+    sendEmailNotification = async () => false;
+}
 
 app.use(cors());
 app.use(express.json());
@@ -111,14 +118,19 @@ app.post('/api/respond', async (req, res) => {
         const compliments = COMPLIMENTS[answer];
         const selectedPoem = poems[Math.floor(Math.random() * poems.length)];
 
-        // ✅ Send email notification with proper await
-        try {
-            console.log('📧 Attempting to send email...');
-            await sendEmailNotification(answer, selectedPoem);
-            console.log('✅ Email sent successfully!');
-        } catch (emailError) {
-            console.error('❌ Email failed:', emailError.message);
-            // Don't fail the whole request if email fails
+        // ✅ Send email notification (non-blocking)
+        if (sendEmailNotification) {
+            sendEmailNotification(answer, selectedPoem)
+                .then(success => {
+                    if (success) {
+                        console.log('✅ Email sent successfully!');
+                    } else {
+                        console.log('⚠️ Email failed but app continues');
+                    }
+                })
+                .catch(err => {
+                    console.error('❌ Email error:', err.message);
+                });
         }
 
         res.json({
