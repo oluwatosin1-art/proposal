@@ -3,6 +3,9 @@ const cors = require('cors');
 const app = express();
 const PORT = process.env.PORT || 5003;
 
+// ✅ IMPORT the email notification
+const { sendEmailNotification } = require('./notification');
+
 app.use(cors());
 app.use(express.json());
 
@@ -47,7 +50,7 @@ const SOUNDS = {
     NO: "https://www.soundjay.com/misc/sounds/water-drop-01.mp3"
 };
 
-// 🏠 ROOT ROUTE - This fixes the "Cannot GET /" error
+// 🏠 ROOT ROUTE
 app.get('/', (req, res) => {
     res.json({
         name: '💖 Romantic Proposal API',
@@ -89,32 +92,49 @@ app.get('/api/status', (req, res) => {
     });
 });
 
-// Submit response with love tracking
-app.post('/api/respond', (req, res) => {
-    const { answer } = req.body;
+// ✅ SINGLE /api/respond endpoint with email notification
+app.post('/api/respond', async (req, res) => {
+    try {
+        const { answer } = req.body;
 
-    if (!answer || (answer !== 'YES' && answer !== 'NO')) {
-        return res.status(400).json({ error: 'Invalid response' });
+        if (!answer || (answer !== 'YES' && answer !== 'NO')) {
+            return res.status(400).json({ error: 'Invalid response' });
+        }
+
+        // Save response
+        proposalState.response = answer;
+        proposalState.timestamp = new Date().toISOString();
+        proposalState.ipAddress = req.ip || req.connection.remoteAddress;
+        proposalState.loveMeter = answer === 'YES' ? Math.floor(Math.random() * 30 + 70) : Math.floor(Math.random() * 30 + 10);
+
+        const poems = POEMS[answer];
+        const compliments = COMPLIMENTS[answer];
+        const selectedPoem = poems[Math.floor(Math.random() * poems.length)];
+
+        // ✅ Send email notification with proper await
+        try {
+            console.log('📧 Attempting to send email...');
+            await sendEmailNotification(answer, selectedPoem);
+            console.log('✅ Email sent successfully!');
+        } catch (emailError) {
+            console.error('❌ Email failed:', emailError.message);
+            // Don't fail the whole request if email fails
+        }
+
+        res.json({
+            success: true,
+            answer: answer,
+            timestamp: proposalState.timestamp,
+            poem: selectedPoem,
+            compliment: compliments[Math.floor(Math.random() * compliments.length)],
+            loveMeter: proposalState.loveMeter,
+            sound: SOUNDS[answer],
+            responseEmoji: answer === 'YES' ? '💖' : '💔'
+        });
+    } catch (error) {
+        console.error('Error in /api/respond:', error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-
-    proposalState.response = answer;
-    proposalState.timestamp = new Date().toISOString();
-    proposalState.ipAddress = req.ip || req.connection.remoteAddress;
-    proposalState.loveMeter = answer === 'YES' ? Math.floor(Math.random() * 30 + 70) : Math.floor(Math.random() * 30 + 10);
-
-    const poems = POEMS[answer];
-    const compliments = COMPLIMENTS[answer];
-
-    res.json({
-        success: true,
-        answer: answer,
-        timestamp: proposalState.timestamp,
-        poem: poems[Math.floor(Math.random() * poems.length)],
-        compliment: compliments[Math.floor(Math.random() * compliments.length)],
-        loveMeter: proposalState.loveMeter,
-        sound: SOUNDS[answer],
-        responseEmoji: answer === 'YES' ? '💖' : '💔'
-    });
 });
 
 // Reset endpoint
@@ -128,44 +148,6 @@ app.post('/api/reset', (req, res) => {
         success: true,
         message: '🔄 Reset successful! Ready for the real answer.',
         status: 'pending'
-    });
-});
-// At the top of server.js - import the notification
-const { sendEmailNotification, sendSMSNotification } = require('./notification');
-
-// In the /api/respond endpoint, after saving the response:
-app.post('/api/respond', (req, res) => {
-    const { answer } = req.body;
-
-    if (!answer || (answer !== 'YES' && answer !== 'NO')) {
-        return res.status(400).json({ error: 'Invalid response' });
-    }
-
-    // Save response
-    proposalState.response = answer;
-    proposalState.timestamp = new Date().toISOString();
-    proposalState.ipAddress = req.ip || req.connection.remoteAddress;
-    proposalState.loveMeter = answer === 'YES' ? Math.floor(Math.random() * 30 + 70) : Math.floor(Math.random() * 30 + 10);
-
-    const poems = POEMS[answer];
-    const compliments = COMPLIMENTS[answer];
-
-    // ✅ ADD THIS: Send email notification
-    const selectedPoem = poems[Math.floor(Math.random() * poems.length)];
-    sendEmailNotification(answer, selectedPoem);
-
-    // Optional: Send SMS too
-    // sendSMSNotification(answer);
-
-    res.json({
-        success: true,
-        answer: answer,
-        timestamp: proposalState.timestamp,
-        poem: selectedPoem,
-        compliment: compliments[Math.floor(Math.random() * compliments.length)],
-        loveMeter: proposalState.loveMeter,
-        sound: SOUNDS[answer],
-        responseEmoji: answer === 'YES' ? '💖' : '💔'
     });
 });
 
@@ -185,8 +167,6 @@ app.get('/api/love-quote', (req, res) => {
         quote: quotes[Math.floor(Math.random() * quotes.length)]
     });
 });
-
-
 
 // For Vercel - export the app
 module.exports = app;
